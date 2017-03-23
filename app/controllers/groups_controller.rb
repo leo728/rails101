@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
-  before_action :authenticate_user! , only: [:new]
-  
+  # before_action :authenticate_user! , only: [:new]
+  before_action :authenticate_user! , only: [:new, :create]
+
    def index
      @groups = Group.all
    end
@@ -19,6 +20,8 @@ class GroupsController < ApplicationController
 
    def create
      @group = Group.new(group_params)
+     @group.user = current_user    # 在新增看板时，记录谁是群组的建立者
+
      if @group.save
         redirect_to groups_path
       else
